@@ -1,98 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`$ref quirks should retain $ref pointers in the schema even if they're circular 1`] = `
-Array [
-  Object {
-    "label": "Headers",
-    "schema": Object {
-      "components": Object {
-        "schemas": Object {
-          "ProductStock": Object {
-            "properties": Object {
-              "test_param": Object {
-                "items": Object {
-                  "$ref": "#/components/schemas/SalesLine",
-                },
-                "type": "array",
-              },
-            },
-            "type": "object",
-            "x-readme-ref-name": "ProductStock",
-          },
-          "SalesLine": Object {
-            "properties": Object {
-              "stock": Object {
-                "$ref": "#/components/schemas/ProductStock",
-              },
-            },
-            "type": "object",
-            "x-readme-ref-name": "SalesLine",
-          },
-          "dateTime": Object {
-            "format": "date-time",
-            "type": "string",
-            "x-readme-ref-name": "dateTime",
-          },
-          "offset": Object {
-            "properties": Object {
-              "id": Object {
-                "type": "string",
-              },
-              "rules": Object {
-                "$ref": "#/components/schemas/rules",
-              },
-            },
-            "type": "object",
-            "x-readme-ref-name": "offset",
-          },
-          "offsetTransition": Object {
-            "properties": Object {
-              "dateTime": Object {
-                "format": "date-time",
-                "type": "string",
-              },
-              "offsetAfter": Object {
-                "$ref": "#/components/schemas/offset",
-              },
-              "offsetBefore": Object {
-                "$ref": "#/components/schemas/offset",
-              },
-            },
-            "type": "object",
-            "x-readme-ref-name": "offsetTransition",
-          },
-          "rules": Object {
-            "properties": Object {
-              "transitions": Object {
-                "items": Object {
-                  "$ref": "#/components/schemas/offsetTransition",
-                },
-                "type": "array",
-              },
-            },
-            "type": "object",
-            "x-readme-ref-name": "rules",
-          },
-        },
-      },
-      "properties": Object {
-        "content": Object {
-          "$schema": "http://json-schema.org/draft-04/schema#",
-          "items": Object {
-            "$ref": "#/components/schemas/SalesLine",
-          },
-          "type": "array",
-        },
-      },
-      "required": Array [],
-      "type": "object",
-    },
-    "type": "header",
-  },
-]
-`;
-
-exports[`deprecated parameters should create deprecatedProps from body and metadata parameters 1`] = `
+exports[`#getParametersAsJsonSchema deprecated parameters should create deprecatedProps from body and metadata parameters 1`] = `
 Array [
   Object {
     "deprecatedProps": Object {
@@ -413,7 +321,7 @@ https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#schema-
 ]
 `;
 
-exports[`deprecated polymorphism should pass through deprecated on a (merged) allOf schema 1`] = `
+exports[`#getParametersAsJsonSchema deprecated polymorphism should pass through deprecated on a (merged) allOf schema 1`] = `
 Array [
   Object {
     "deprecatedProps": Object {
@@ -448,7 +356,7 @@ Array [
 ]
 `;
 
-exports[`options mergeIntoBodyAndMetadata retainDeprecatedProperties (default behavior) should support merging \`deprecatedProps\` together 1`] = `
+exports[`#getParametersAsJsonSchema options mergeIntoBodyAndMetadata retainDeprecatedProperties (default behavior) should support merging \`deprecatedProps\` together 1`] = `
 Array [
   Object {
     "deprecatedProps": Object {
@@ -485,7 +393,7 @@ Array [
 ]
 `;
 
-exports[`options mergeIntoBodyAndMetadata should merge params categorized as metadata into a single block 1`] = `
+exports[`#getParametersAsJsonSchema options mergeIntoBodyAndMetadata should merge params categorized as metadata into a single block 1`] = `
 Array [
   Object {
     "label": "Metadata",
@@ -524,7 +432,7 @@ Array [
 ]
 `;
 
-exports[`parameters polymorphism should merge allOf schemas together 1`] = `
+exports[`#getParametersAsJsonSchema parameters polymorphism should merge allOf schemas together 1`] = `
 Array [
   Object {
     "label": "Body Params",
@@ -581,7 +489,7 @@ Array [
 ]
 `;
 
-exports[`parameters should convert parameters to JSON schema 1`] = `
+exports[`#getParametersAsJsonSchema parameters should convert parameters to JSON schema 1`] = `
 Array [
   Object {
     "label": "Path Params",
@@ -620,7 +528,7 @@ Array [
 ]
 `;
 
-exports[`polymorphism / discriminators should retain discriminator \`mapping\` refs when present 1`] = `
+exports[`#getParametersAsJsonSchema polymorphism / discriminators should retain discriminator \`mapping\` refs when present 1`] = `
 Array [
   Object {
     "label": "Body Params",
@@ -705,7 +613,7 @@ Array [
 ]
 `;
 
-exports[`request bodies should convert request bodies to JSON schema application/json 1`] = `
+exports[`#getParametersAsJsonSchema request bodies should convert request bodies to JSON schema application/json 1`] = `
 Array [
   Object {
     "label": "Body Params",
@@ -793,7 +701,7 @@ Array [
 ]
 `;
 
-exports[`request bodies should convert request bodies to JSON schema application/x-www-form-urlencoded 1`] = `
+exports[`#getParametersAsJsonSchema request bodies should convert request bodies to JSON schema application/x-www-form-urlencoded 1`] = `
 Array [
   Object {
     "label": "Path Params",
@@ -836,7 +744,7 @@ Array [
 ]
 `;
 
-exports[`type sorting should return with a json schema for each parameter type (body instead of formData) 1`] = `
+exports[`#getParametersAsJsonSchema type sorting should return with a json schema for each parameter type (body instead of formData) 1`] = `
 Array [
   Object {
     "label": "Path Params",
@@ -910,7 +818,7 @@ Array [
 ]
 `;
 
-exports[`type sorting should return with a json schema for each parameter type (formData instead of body) 1`] = `
+exports[`#getParametersAsJsonSchema type sorting should return with a json schema for each parameter type (formData instead of body) 1`] = `
 Array [
   Object {
     "label": "Path Params",

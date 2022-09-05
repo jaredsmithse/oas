@@ -1,0 +1,75 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getResponseAsJsonSchema \`enum\` handling should supplement response schema descriptions with enums 1`] = `
+Array [
+  Object {
+    "description": "OK",
+    "label": "Response body",
+    "schema": Object {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "properties": Object {
+        "description (markdown)": Object {
+          "description": "This is a string with a **markdown** description: [link](ref:action-object)",
+          "type": "string",
+        },
+        "enum (no description)": Object {
+          "description": "\`available\` \`pending\` \`sold\`",
+          "enum": Array [
+            "available",
+            "pending",
+            "sold",
+          ],
+          "type": "string",
+        },
+        "enum (with default + no description)": Object {
+          "default": "available",
+          "description": "\`available\` \`pending\` \`sold\`",
+          "enum": Array [
+            "available",
+            "pending",
+            "sold",
+          ],
+          "type": "string",
+        },
+        "enum (with default)": Object {
+          "default": "available",
+          "description": "This enum has a \`default\` of \`available\`.
+
+\`available\` \`pending\` \`sold\`",
+          "enum": Array [
+            "available",
+            "pending",
+            "sold",
+          ],
+          "type": "string",
+        },
+        "enum (with empty option and empty default)": Object {
+          "description": "This enum has a an empty string (\`\\"\\"\`) as its only available option, and that same value is set as its \`default\`.",
+          "enum": Array [
+            "",
+          ],
+          "type": "string",
+        },
+        "enum (with empty option)": Object {
+          "description": "This enum has a an empty string (\`\\"\\"\`) as one of its available options.
+
+\`available\` \`pending\` \`sold\`",
+          "enum": Array [
+            "",
+            "available",
+            "pending",
+            "sold",
+          ],
+          "type": "string",
+        },
+        "stock": Object {
+          "type": "string",
+        },
+      },
+      "type": "object",
+      "x-readme-ref-name": "enum-request",
+    },
+    "type": "object",
+  },
+]
+`;

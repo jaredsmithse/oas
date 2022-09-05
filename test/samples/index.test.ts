@@ -6,10 +6,12 @@
  */
 import type * as RMOAS from '../../src/rmoas.types';
 
+import { expect } from 'chai';
+
 import sampleFromSchema from '../../src/samples';
 
-describe('sampleFromSchema', () => {
-  it('should be memoized', async () => {
+describe('sampleFromSchema', function () {
+  it('should be memoized', async function () {
     const schema: RMOAS.SchemaObject = {
       type: 'string',
       format: 'date-time',
@@ -21,10 +23,10 @@ describe('sampleFromSchema', () => {
       setTimeout(r, 200);
     });
 
-    expect(sampleFromSchema(schema)).toStrictEqual(firstRun);
+    expect(sampleFromSchema(schema)).to.deep.equal(firstRun);
   });
 
-  it('returns object with no readonly fields for parameter', () => {
+  it('returns object with no readonly fields for parameter', function () {
     const definition: RMOAS.SchemaObject = {
       type: 'object',
       properties: {
@@ -38,14 +40,12 @@ describe('sampleFromSchema', () => {
       },
     };
 
-    const expected = {
+    expect(sampleFromSchema(definition, { includeReadOnly: false })).to.deep.equal({
       id: 0,
-    };
-
-    expect(sampleFromSchema(definition, { includeReadOnly: false })).toStrictEqual(expected);
+    });
   });
 
-  it('returns object with readonly fields for parameter, with includeReadOnly', () => {
+  it('returns object with readonly fields for parameter, with includeReadOnly', function () {
     const definition: RMOAS.SchemaObject = {
       type: 'object',
       properties: {
@@ -60,15 +60,13 @@ describe('sampleFromSchema', () => {
       },
     };
 
-    const expected = {
+    expect(sampleFromSchema(definition, { includeReadOnly: true })).to.deep.equal({
       id: 0,
       readOnlyDog: 'woof',
-    };
-
-    expect(sampleFromSchema(definition, { includeReadOnly: true })).toStrictEqual(expected);
+    });
   });
 
-  it('returns object without deprecated fields for parameter', () => {
+  it('returns object without deprecated fields for parameter', function () {
     const definition: RMOAS.SchemaObject = {
       type: 'object',
       properties: {
@@ -82,14 +80,12 @@ describe('sampleFromSchema', () => {
       },
     };
 
-    const expected = {
+    expect(sampleFromSchema(definition)).to.deep.equal({
       id: 0,
-    };
-
-    expect(sampleFromSchema(definition)).toStrictEqual(expected);
+    });
   });
 
-  it('returns object without writeonly fields for parameter', () => {
+  it('returns object without writeonly fields for parameter', function () {
     const definition: RMOAS.SchemaObject = {
       type: 'object',
       properties: {
@@ -103,14 +99,12 @@ describe('sampleFromSchema', () => {
       },
     };
 
-    const expected = {
+    expect(sampleFromSchema(definition)).to.deep.equal({
       id: 0,
-    };
-
-    expect(sampleFromSchema(definition)).toStrictEqual(expected);
+    });
   });
 
-  it('returns object with writeonly fields for parameter, with includeWriteOnly', () => {
+  it('returns object with writeonly fields for parameter, with includeWriteOnly', function () {
     const definition: RMOAS.SchemaObject = {
       type: 'object',
       properties: {
@@ -124,15 +118,13 @@ describe('sampleFromSchema', () => {
       },
     };
 
-    const expected = {
+    expect(sampleFromSchema(definition, { includeWriteOnly: true })).to.deep.equal({
       id: 0,
       writeOnlyDog: 'string',
-    };
-
-    expect(sampleFromSchema(definition, { includeWriteOnly: true })).toStrictEqual(expected);
+    });
   });
 
-  it('returns object without any $$ref fields at the root schema level', () => {
+  it('returns object without any $$ref fields at the root schema level', function () {
     const definition: RMOAS.SchemaObject = {
       type: 'object',
       properties: {
@@ -149,16 +141,14 @@ describe('sampleFromSchema', () => {
       $$ref: '#/components/schemas/Welcome',
     };
 
-    const expected = {
+    expect(sampleFromSchema(definition, { includeWriteOnly: true })).to.deep.equal({
       value: {
         message: 'Hello, World!',
       },
-    };
-
-    expect(sampleFromSchema(definition, { includeWriteOnly: true })).toStrictEqual(expected);
+    });
   });
 
-  it('returns object without any $$ref fields at nested schema levels', () => {
+  it('returns object without any $$ref fields at nested schema levels', function () {
     const definition: RMOAS.SchemaObject = {
       type: 'object',
       properties: {
@@ -177,18 +167,16 @@ describe('sampleFromSchema', () => {
       $$ref: '#/components/schemas/Welcome',
     };
 
-    const expected = {
+    expect(sampleFromSchema(definition, { includeWriteOnly: true })).to.deep.equal({
       a: {
         value: {
           message: 'Hello, World!',
         },
       },
-    };
-
-    expect(sampleFromSchema(definition, { includeWriteOnly: true })).toStrictEqual(expected);
+    });
   });
 
-  it('returns object with any $$ref fields that appear to be user-created', () => {
+  it('returns object with any $$ref fields that appear to be user-created', function () {
     const definition: RMOAS.SchemaObject = {
       type: 'object',
       properties: {
@@ -207,19 +195,17 @@ describe('sampleFromSchema', () => {
       $$ref: '#/components/schemas/Welcome',
     };
 
-    const expected = {
+    expect(sampleFromSchema(definition, { includeWriteOnly: true })).to.deep.equal({
       $$ref: {
         value: {
           message: 'Hello, World!',
         },
       },
-    };
-
-    expect(sampleFromSchema(definition, { includeWriteOnly: true })).toStrictEqual(expected);
+    });
   });
 
-  describe('primitive type handling', () => {
-    it('should handle when an unknown type is detected', () => {
+  describe('primitive type handling', function () {
+    it('should handle when an unknown type is detected', function () {
       const definition: RMOAS.SchemaObject = {
         type: 'array',
         // @ts-expect-error We're testing the failure case for `png` not being a valid type.
@@ -228,12 +214,10 @@ describe('sampleFromSchema', () => {
         },
       };
 
-      const expected = ['Unknown Type: png'];
-
-      expect(sampleFromSchema(definition)).toStrictEqual(expected);
+      expect(sampleFromSchema(definition)).to.deep.equal(['Unknown Type: png']);
     });
 
-    it('should return an undefined value for type=file', () => {
+    it('should return an undefined value for type=file', function () {
       const definition: RMOAS.SchemaObject = {
         type: 'array',
         // @ts-expect-error We're testing the failure case for `file` not being a valid type.
@@ -242,160 +226,134 @@ describe('sampleFromSchema', () => {
         },
       };
 
-      const expected = [undefined];
-
-      expect(sampleFromSchema(definition)).toStrictEqual(expected);
+      expect(sampleFromSchema(definition)).to.deep.equal([undefined]);
     });
 
-    describe('type=boolean', () => {
-      it('returns a boolean for a boolean', () => {
+    describe('type=boolean', function () {
+      it('returns a boolean for a boolean', function () {
         const definition: RMOAS.SchemaObject = {
           type: 'boolean',
         };
 
-        const expected = true;
-
-        expect(sampleFromSchema(definition)).toStrictEqual(expected);
+        expect(sampleFromSchema(definition)).to.be.true;
       });
 
-      it('returns a default value for a boolean with a default present', () => {
+      it('returns a default value for a boolean with a default present', function () {
         const definition: RMOAS.SchemaObject = {
           type: 'boolean',
           default: false,
         };
 
-        const expected = false;
-
-        expect(sampleFromSchema(definition)).toStrictEqual(expected);
+        expect(sampleFromSchema(definition)).to.be.false;
       });
     });
 
-    describe('type=number', () => {
-      it('returns a number for a number with no format', () => {
+    describe('type=number', function () {
+      it('returns a number for a number with no format', function () {
         const definition: RMOAS.SchemaObject = {
           type: 'number',
         };
 
-        const expected = 0;
-
-        expect(sampleFromSchema(definition)).toStrictEqual(expected);
+        expect(sampleFromSchema(definition)).to.equal(0);
       });
 
-      it('returns a number for a number with format=float', () => {
+      it('returns a number for a number with format=float', function () {
         const definition: RMOAS.SchemaObject = {
           type: 'number',
           format: 'float',
         };
 
-        const expected = 0.0;
-
-        expect(sampleFromSchema(definition)).toStrictEqual(expected);
+        expect(sampleFromSchema(definition)).to.equal(0.0);
       });
 
-      it('returns a default value for a number with a default present', () => {
+      it('returns a default value for a number with a default present', function () {
         const definition: RMOAS.SchemaObject = {
           type: 'number',
           default: 123,
         };
 
-        const expected = 123;
-
-        expect(sampleFromSchema(definition)).toStrictEqual(expected);
+        expect(sampleFromSchema(definition)).to.equal(123);
       });
     });
 
-    describe('type=string', () => {
-      it('returns a date-time for a string with format=date-time', () => {
+    describe('type=string', function () {
+      it('returns a date-time for a string with format=date-time', function () {
         const definition: RMOAS.SchemaObject = {
           type: 'string',
           format: 'date-time',
         };
 
         // 2022-01-24T21:26:50.058Z
-        expect(sampleFromSchema(definition)).toMatch(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z/);
+        expect(sampleFromSchema(definition)).to.match(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z/);
       });
 
-      it('returns a date for a string with format=date', () => {
+      it('returns a date for a string with format=date', function () {
         const definition: RMOAS.SchemaObject = {
           type: 'string',
           format: 'date',
         };
 
-        const expected = new Date().toISOString().substring(0, 10);
-
-        expect(sampleFromSchema(definition)).toStrictEqual(expected);
+        expect(sampleFromSchema(definition)).to.equal(new Date().toISOString().substring(0, 10));
       });
 
-      it('returns a UUID for a string with format=uuid', () => {
+      it('returns a UUID for a string with format=uuid', function () {
         const definition: RMOAS.SchemaObject = {
           type: 'string',
           format: 'uuid',
         };
 
-        const expected = '3fa85f64-5717-4562-b3fc-2c963f66afa6';
-
-        expect(sampleFromSchema(definition)).toStrictEqual(expected);
+        expect(sampleFromSchema(definition)).to.equal('3fa85f64-5717-4562-b3fc-2c963f66afa6');
       });
 
-      it('returns a hostname for a string with format=hostname', () => {
+      it('returns a hostname for a string with format=hostname', function () {
         const definition: RMOAS.SchemaObject = {
           type: 'string',
           format: 'hostname',
         };
 
-        const expected = 'example.com';
-
-        expect(sampleFromSchema(definition)).toStrictEqual(expected);
+        expect(sampleFromSchema(definition)).to.equal('example.com');
       });
 
-      it('returns an IPv4 address for a string with format=ipv4', () => {
+      it('returns an IPv4 address for a string with format=ipv4', function () {
         const definition: RMOAS.SchemaObject = {
           type: 'string',
           format: 'ipv4',
         };
 
-        const expected = '198.51.100.42';
-
-        expect(sampleFromSchema(definition)).toStrictEqual(expected);
+        expect(sampleFromSchema(definition)).to.equal('198.51.100.42');
       });
 
-      it('returns an IPv6 address for a string with format=ipv6', () => {
+      it('returns an IPv6 address for a string with format=ipv6', function () {
         const definition: RMOAS.SchemaObject = {
           type: 'string',
           format: 'ipv6',
         };
 
-        const expected = '2001:0db8:5b96:0000:0000:426f:8e17:642a';
-
-        expect(sampleFromSchema(definition)).toStrictEqual(expected);
+        expect(sampleFromSchema(definition)).to.equal('2001:0db8:5b96:0000:0000:426f:8e17:642a');
       });
 
-      it('returns an email for a string with format=email', () => {
+      it('returns an email for a string with format=email', function () {
         const definition: RMOAS.SchemaObject = {
           type: 'string',
           format: 'email',
         };
 
-        const expected = 'user@example.com';
-
-        expect(sampleFromSchema(definition)).toStrictEqual(expected);
+        expect(sampleFromSchema(definition)).to.equal('user@example.com');
       });
 
-      it('returns a default value for a string with a default present', () => {
+      it('returns a default value for a string with a default present', function () {
         const definition: RMOAS.SchemaObject = {
           type: 'string',
           default: 'test',
         };
 
-        const expected = 'test';
-
-        expect(sampleFromSchema(definition)).toStrictEqual(expected);
+        expect(sampleFromSchema(definition)).to.equal('test');
       });
     });
   });
 
-  describe('type=undefined', () => {
-    it('should handle if an object is present but is missing type=object', () => {
+  describe('type=undefined', function () {
+    it('should handle if an object is present but is missing type=object', function () {
       const definition: RMOAS.SchemaObject = {
         properties: {
           foo: {
@@ -404,37 +362,31 @@ describe('sampleFromSchema', () => {
         },
       };
 
-      const expected = {
+      expect(sampleFromSchema(definition)).to.deep.equal({
         foo: 'string',
-      };
-
-      expect(sampleFromSchema(definition)).toStrictEqual(expected);
+      });
     });
 
-    it('should handle if an array is present but is missing type=array', () => {
+    it('should handle if an array is present but is missing type=array', function () {
       const definition: RMOAS.SchemaObject = {
         items: {
           type: 'string',
         },
       };
 
-      const expected = ['string'];
-
-      expect(sampleFromSchema(definition)).toStrictEqual(expected);
+      expect(sampleFromSchema(definition)).to.deep.equal(['string']);
     });
 
     // Techncally this is a malformed schema, but we should do our best to support it.
-    it('should handle if an array if present but is missing `items`', () => {
+    it('should handle if an array if present but is missing `items`', function () {
       const definition: RMOAS.SchemaObject = {
         type: 'array',
       };
 
-      const expected = [];
-
-      expect(sampleFromSchema(definition)).toStrictEqual(expected);
+      expect(sampleFromSchema(definition)).to.deep.equal([]);
     });
 
-    it("should handle a case where no type is present and the schema can't be determined to be an object or array", () => {
+    it("should handle a case where no type is present and the schema can't be determined to be an object or array", function () {
       const definition: RMOAS.SchemaObject = {
         type: 'object',
         properties: {
@@ -444,16 +396,14 @@ describe('sampleFromSchema', () => {
         },
       };
 
-      const expected = {
+      expect(sampleFromSchema(definition)).to.deep.equal({
         foo: undefined,
-      };
-
-      expect(sampleFromSchema(definition)).toStrictEqual(expected);
+      });
     });
   });
 
-  describe('type=array', () => {
-    it('returns array with sample of array type', () => {
+  describe('type=array', function () {
+    it('returns array with sample of array type', function () {
       const definition: RMOAS.SchemaObject = {
         type: 'array',
         items: {
@@ -461,12 +411,10 @@ describe('sampleFromSchema', () => {
         },
       };
 
-      const expected = [0];
-
-      expect(sampleFromSchema(definition)).toStrictEqual(expected);
+      expect(sampleFromSchema(definition)).to.deep.equal([0]);
     });
 
-    it('returns string for example for array that has example of type string', () => {
+    it('returns string for example for array that has example of type string', function () {
       const definition: RMOAS.SchemaObject = {
         type: 'array',
         items: {
@@ -475,12 +423,10 @@ describe('sampleFromSchema', () => {
         example: 'dog',
       };
 
-      const expected = 'dog';
-
-      expect(sampleFromSchema(definition)).toStrictEqual(expected);
+      expect(sampleFromSchema(definition)).to.equal('dog');
     });
 
-    it('returns array of examples for array that has examples', () => {
+    it('returns array of examples for array that has examples', function () {
       const definition: RMOAS.SchemaObject = {
         type: 'array',
         items: {
@@ -489,12 +435,10 @@ describe('sampleFromSchema', () => {
         example: ['dog', 'cat'],
       };
 
-      const expected = ['dog', 'cat'];
-
-      expect(sampleFromSchema(definition)).toStrictEqual(expected);
+      expect(sampleFromSchema(definition)).to.deep.equal(['dog', 'cat']);
     });
 
-    it('returns array of samples for oneOf type', () => {
+    it('returns array of samples for oneOf type', function () {
       const definition: RMOAS.SchemaObject = {
         type: 'array',
         items: {
@@ -507,12 +451,10 @@ describe('sampleFromSchema', () => {
         },
       };
 
-      const expected = [0];
-
-      expect(sampleFromSchema(definition)).toStrictEqual(expected);
+      expect(sampleFromSchema(definition)).to.deep.equal([0]);
     });
 
-    it('returns array of samples for oneOf types', () => {
+    it('returns array of samples for oneOf types', function () {
       const definition: RMOAS.SchemaObject = {
         type: 'array',
         items: {
@@ -528,12 +470,10 @@ describe('sampleFromSchema', () => {
         },
       };
 
-      const expected = ['string', 0];
-
-      expect(sampleFromSchema(definition)).toStrictEqual(expected);
+      expect(sampleFromSchema(definition)).to.deep.equal(['string', 0]);
     });
 
-    it('returns array of samples for oneOf examples', () => {
+    it('returns array of samples for oneOf examples', function () {
       const definition: RMOAS.SchemaObject = {
         type: 'array',
         items: {
@@ -551,12 +491,10 @@ describe('sampleFromSchema', () => {
         },
       };
 
-      const expected = ['dog', 1];
-
-      expect(sampleFromSchema(definition)).toStrictEqual(expected);
+      expect(sampleFromSchema(definition)).to.deep.equal(['dog', 1]);
     });
 
-    it('returns array of samples for anyOf type', () => {
+    it('returns array of samples for anyOf type', function () {
       const definition: RMOAS.SchemaObject = {
         type: 'array',
         items: {
@@ -569,12 +507,10 @@ describe('sampleFromSchema', () => {
         },
       };
 
-      const expected = [0];
-
-      expect(sampleFromSchema(definition)).toStrictEqual(expected);
+      expect(sampleFromSchema(definition)).to.deep.equal([0]);
     });
 
-    it('returns array of samples for anyOf types', () => {
+    it('returns array of samples for anyOf types', function () {
       const definition: RMOAS.SchemaObject = {
         type: 'array',
         items: {
@@ -590,12 +526,10 @@ describe('sampleFromSchema', () => {
         },
       };
 
-      const expected = ['string', 0];
-
-      expect(sampleFromSchema(definition)).toStrictEqual(expected);
+      expect(sampleFromSchema(definition)).to.deep.equal(['string', 0]);
     });
 
-    it('returns array of samples for anyOf examples', () => {
+    it('returns array of samples for anyOf examples', function () {
       const definition: RMOAS.SchemaObject = {
         type: 'array',
         items: {
@@ -613,12 +547,10 @@ describe('sampleFromSchema', () => {
         },
       };
 
-      const expected = ['dog', 1];
-
-      expect(sampleFromSchema(definition)).toStrictEqual(expected);
+      expect(sampleFromSchema(definition)).to.deep.equal(['dog', 1]);
     });
 
-    it('returns null for a null example', () => {
+    it('returns null for a null example', function () {
       const definition: RMOAS.SchemaObject = {
         type: 'object',
         properties: {
@@ -630,14 +562,12 @@ describe('sampleFromSchema', () => {
         },
       };
 
-      const expected = {
+      expect(sampleFromSchema(definition)).to.deep.equal({
         foo: null,
-      };
-
-      expect(sampleFromSchema(definition)).toStrictEqual(expected);
+      });
     });
 
-    it('returns null for a null object-level example', () => {
+    it('returns null for a null object-level example', function () {
       const definition: RMOAS.SchemaObject = {
         type: 'object',
         properties: {
@@ -651,16 +581,14 @@ describe('sampleFromSchema', () => {
         },
       };
 
-      const expected = {
+      expect(sampleFromSchema(definition)).to.deep.equal({
         foo: null,
-      };
-
-      expect(sampleFromSchema(definition)).toStrictEqual(expected);
+      });
     });
   });
 
-  describe('additionalProperties', () => {
-    it('returns object with additional props', () => {
+  describe('additionalProperties', function () {
+    it('returns object with additional props', function () {
       const definition: RMOAS.SchemaObject = {
         type: 'object',
         properties: {
@@ -673,15 +601,13 @@ describe('sampleFromSchema', () => {
         },
       };
 
-      const expected = {
+      expect(sampleFromSchema(definition)).to.deep.equal({
         additionalProp: 'string',
         dog: 'string',
-      };
-
-      expect(sampleFromSchema(definition)).toStrictEqual(expected);
+      });
     });
 
-    it('returns object with additional props=true', () => {
+    it('returns object with additional props=true', function () {
       const definition: RMOAS.SchemaObject = {
         type: 'object',
         properties: {
@@ -692,15 +618,13 @@ describe('sampleFromSchema', () => {
         additionalProperties: true,
       };
 
-      const expected = {
+      expect(sampleFromSchema(definition)).to.deep.equal({
         additionalProp: {},
         dog: 'string',
-      };
-
-      expect(sampleFromSchema(definition)).toStrictEqual(expected);
+      });
     });
 
-    it('returns object with 2 properties with no type passed but properties', () => {
+    it('returns object with 2 properties with no type passed but properties', function () {
       const definition: RMOAS.SchemaObject = {
         properties: {
           alien: {
@@ -712,43 +636,37 @@ describe('sampleFromSchema', () => {
         },
       };
 
-      const expected = {
+      expect(sampleFromSchema(definition)).to.deep.equal({
         alien: 'string',
         dog: 0,
-      };
-
-      expect(sampleFromSchema(definition)).toStrictEqual(expected);
+      });
     });
 
-    it('returns object with additional props with no type passed', () => {
+    it('returns object with additional props with no type passed', function () {
       const definition: RMOAS.SchemaObject = {
         additionalProperties: {
           type: 'string',
         },
       };
 
-      const expected = {
+      expect(sampleFromSchema(definition)).to.deep.equal({
         additionalProp: 'string',
-      };
-
-      expect(sampleFromSchema(definition)).toStrictEqual(expected);
+      });
     });
   });
 
-  describe('enums', () => {
-    it('returns default value when enum provided', () => {
+  describe('enums', function () {
+    it('returns default value when enum provided', function () {
       const definition: RMOAS.SchemaObject = {
         type: 'string',
         default: 'one',
         enum: ['two', 'one'],
       };
 
-      const expected = 'one';
-
-      expect(sampleFromSchema(definition)).toStrictEqual(expected);
+      expect(sampleFromSchema(definition)).to.equal('one');
     });
 
-    it('returns example value when provided', () => {
+    it('returns example value when provided', function () {
       const definition: RMOAS.SchemaObject = {
         type: 'string',
         default: 'one',
@@ -756,24 +674,20 @@ describe('sampleFromSchema', () => {
         enum: ['two', 'one'],
       };
 
-      const expected = 'two';
-
-      expect(sampleFromSchema(definition)).toStrictEqual(expected);
+      expect(sampleFromSchema(definition)).to.equal('two');
     });
 
-    it('sets first enum if provided', () => {
+    it('sets first enum if provided', function () {
       const definition: RMOAS.SchemaObject = {
         type: 'string',
         enum: ['one', 'two'],
       };
 
-      const expected = 'one';
-
-      expect(sampleFromSchema(definition)).toStrictEqual(expected);
+      expect(sampleFromSchema(definition)).to.equal('one');
     });
 
     // @todo this should really return `['1', '2']` as the expected data
-    it('returns array with default values', () => {
+    it('returns array with default values', function () {
       const definition = {
         items: {
           enum: ['one', 'two'],
@@ -782,14 +696,12 @@ describe('sampleFromSchema', () => {
         default: ['1', '2'],
       };
 
-      const expected = ['one'];
-
-      expect(sampleFromSchema(definition)).toStrictEqual(expected);
+      expect(sampleFromSchema(definition)).to.deep.equal(['one']);
     });
   });
 
-  describe('polymorphism', () => {
-    it('should handle an allOf schema', () => {
+  describe('polymorphism', function () {
+    it('should handle an allOf schema', function () {
       const definition: RMOAS.SchemaObject = {
         allOf: [
           {
@@ -815,16 +727,14 @@ describe('sampleFromSchema', () => {
         ],
       };
 
-      const expected = {
+      expect(sampleFromSchema(definition)).to.deep.equal({
         name: 'string',
         tag: 'string',
         id: 0,
-      };
-
-      expect(sampleFromSchema(definition)).toStrictEqual(expected);
+      });
     });
 
-    it('should grab properties from allOf polymorphism', () => {
+    it('should grab properties from allOf polymorphism', function () {
       const polymorphismSchema: RMOAS.SchemaObject = {
         allOf: [
           {
@@ -862,19 +772,17 @@ describe('sampleFromSchema', () => {
         ],
       };
 
-      const expected = {
+      expect(sampleFromSchema(polymorphismSchema)).to.deep.equal({
         param1: {
           name: 'Owlbert',
         },
         param2: {
           description: 'Mascot of ReadMe',
         },
-      };
-
-      expect(sampleFromSchema(polymorphismSchema)).toStrictEqual(expected);
+      });
     });
 
-    it('should grab first property from anyOf/oneOf polymorphism', () => {
+    it('should grab first property from anyOf/oneOf polymorphism', function () {
       const polymorphismSchema: RMOAS.SchemaObject = {
         allOf: [
           {
@@ -921,16 +829,14 @@ describe('sampleFromSchema', () => {
         ],
       };
 
-      const expected = {
+      expect(sampleFromSchema(polymorphismSchema)).to.deep.equal({
         param1: {
           name: 'Owlbert',
         },
         param2: {
           position: 'Chief Whimsical Officer',
         },
-      };
-
-      expect(sampleFromSchema(polymorphismSchema)).toStrictEqual(expected);
+      });
     });
   });
 });
