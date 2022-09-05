@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`#dereference() should add metadata to components pre-dereferencing to preserve their lineage stored as \`title\` if the \`preserveRefAsJSONSchemaTitle\` option is supplied 1`] = `
+exports[`oas #dereference() should add metadata to components pre-dereferencing to preserve their lineage stored as \`title\` if the \`preserveRefAsJSONSchemaTitle\` option is supplied 1`] = `
 Object {
   "/pet": Object {
     "post": Object {
@@ -2073,7 +2073,7 @@ Object {
 }
 `;
 
-exports[`#dereference() should add metadata to components pre-dereferencing to preserve their lineage stored as \`x-readme-ref-name 1`] = `
+exports[`oas #dereference() should add metadata to components pre-dereferencing to preserve their lineage stored as \`x-readme-ref-name 1`] = `
 Object {
   "/multischema/of-everything": Object {
     "post": Object {
@@ -3440,21 +3440,6 @@ Object {
       },
       "summary": "Simple Object",
     },
-  },
-}
-`;
-
-exports[`#operation() should return a default when no operation 1`] = `
-Operation {
-  "api": Object {},
-  "callbackExamples": undefined,
-  "contentType": undefined,
-  "method": "get",
-  "path": "/unknown",
-  "requestBodyExamples": undefined,
-  "responseExamples": undefined,
-  "schema": Object {
-    "parameters": Array [],
   },
 }
 `;

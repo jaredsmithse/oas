@@ -1,6 +1,91 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`#getParametersAsJsonSchema() should return json schema 1`] = `
+exports[`operation #getCallback() should return an operation from a callback if it exists 1`] = `
+Object {
+  "description": "[common] callback description",
+  "get": Object {
+    "parameters": Array [
+      Object {
+        "in": "query",
+        "name": "queryParam",
+        "required": true,
+        "schema": Object {
+          "type": "string",
+        },
+      },
+      Object {
+        "in": "query",
+        "name": "anotherQueryParam",
+        "required": true,
+        "schema": Object {
+          "type": "string",
+        },
+      },
+    ],
+    "responses": Object {
+      "200": Object {
+        "content": Object {
+          "application/json": Object {
+            "example": Object {
+              "id": 1,
+              "is_a_good_dog": true,
+              "name": "Pug",
+            },
+          },
+        },
+        "description": "callback successfully processed",
+      },
+    },
+  },
+  "parameters": Array [
+    Object {
+      "in": "query",
+      "name": "queryParam",
+      "required": true,
+      "schema": Object {
+        "type": "string",
+      },
+    },
+  ],
+  "post": Object {
+    "requestBody": Object {
+      "content": Object {
+        "application/json": Object {
+          "schema": Object {
+            "example": Object {
+              "id": 1,
+              "is_a_good_dog": true,
+              "name": "Pug",
+            },
+            "properties": Object {
+              "id": Object {
+                "type": "integer",
+              },
+              "is_a_good_dog": Object {
+                "type": "boolean",
+              },
+              "name": Object {
+                "type": "string",
+              },
+            },
+            "type": "object",
+            "x-readme-ref-name": "dog",
+          },
+        },
+      },
+      "description": "Callback payload",
+    },
+    "responses": Object {
+      "200": Object {
+        "description": "callback successfully processed",
+      },
+    },
+  },
+  "summary": "[common] callback summary",
+}
+`;
+
+exports[`operation #getParametersAsJsonSchema() should return json schema 1`] = `
 Array [
   Object {
     "label": "Body Params",
@@ -88,7 +173,279 @@ Array [
 ]
 `;
 
-exports[`#prepareSecurity() should work for petstore 1`] = `
+exports[`operation #getRequestBody() should return the specified requestBody media type 1`] = `
+Object {
+  "schema": Object {
+    "properties": Object {
+      "category": Object {
+        "properties": Object {
+          "id": Object {
+            "format": "int64",
+            "type": "integer",
+          },
+          "name": Object {
+            "type": "string",
+          },
+        },
+        "type": "object",
+        "x-readme-ref-name": "Category",
+        "xml": Object {
+          "name": "Category",
+        },
+      },
+      "id": Object {
+        "default": 40,
+        "example": 25,
+        "format": "int64",
+        "readOnly": true,
+        "type": "integer",
+      },
+      "name": Object {
+        "example": "doggie",
+        "type": "string",
+      },
+      "photoUrls": Object {
+        "items": Object {
+          "example": "https://example.com/photo.png",
+          "type": "string",
+        },
+        "type": "array",
+        "xml": Object {
+          "name": "photoUrl",
+          "wrapped": true,
+        },
+      },
+      "status": Object {
+        "description": "pet status in the store",
+        "enum": Array [
+          "available",
+          "pending",
+          "sold",
+        ],
+        "type": "string",
+      },
+      "tags": Object {
+        "items": Object {
+          "properties": Object {
+            "id": Object {
+              "format": "int64",
+              "type": "integer",
+            },
+            "name": Object {
+              "type": "string",
+            },
+          },
+          "type": "object",
+          "x-readme-ref-name": "Tag",
+          "xml": Object {
+            "name": "Tag",
+          },
+        },
+        "type": "array",
+        "xml": Object {
+          "name": "tag",
+          "wrapped": true,
+        },
+      },
+    },
+    "required": Array [
+      "name",
+      "photoUrls",
+    ],
+    "type": "object",
+    "x-readme-ref-name": "Pet",
+    "xml": Object {
+      "name": "Pet",
+    },
+  },
+}
+`;
+
+exports[`operation #getResponseByStatusCode() should return the response 1`] = `
+Object {
+  "content": Object {
+    "application/json": Object {
+      "schema": Object {
+        "items": Object {
+          "properties": Object {
+            "category": Object {
+              "properties": Object {
+                "id": Object {
+                  "format": "int64",
+                  "type": "integer",
+                },
+                "name": Object {
+                  "type": "string",
+                },
+              },
+              "type": "object",
+              "x-readme-ref-name": "Category",
+              "xml": Object {
+                "name": "Category",
+              },
+            },
+            "id": Object {
+              "default": 40,
+              "example": 25,
+              "format": "int64",
+              "readOnly": true,
+              "type": "integer",
+            },
+            "name": Object {
+              "example": "doggie",
+              "type": "string",
+            },
+            "photoUrls": Object {
+              "items": Object {
+                "example": "https://example.com/photo.png",
+                "type": "string",
+              },
+              "type": "array",
+              "xml": Object {
+                "name": "photoUrl",
+                "wrapped": true,
+              },
+            },
+            "status": Object {
+              "description": "pet status in the store",
+              "enum": Array [
+                "available",
+                "pending",
+                "sold",
+              ],
+              "type": "string",
+            },
+            "tags": Object {
+              "items": Object {
+                "properties": Object {
+                  "id": Object {
+                    "format": "int64",
+                    "type": "integer",
+                  },
+                  "name": Object {
+                    "type": "string",
+                  },
+                },
+                "type": "object",
+                "x-readme-ref-name": "Tag",
+                "xml": Object {
+                  "name": "Tag",
+                },
+              },
+              "type": "array",
+              "xml": Object {
+                "name": "tag",
+                "wrapped": true,
+              },
+            },
+          },
+          "required": Array [
+            "name",
+            "photoUrls",
+          ],
+          "type": "object",
+          "x-readme-ref-name": "Pet",
+          "xml": Object {
+            "name": "Pet",
+          },
+        },
+        "type": "array",
+      },
+    },
+    "application/xml": Object {
+      "schema": Object {
+        "items": Object {
+          "properties": Object {
+            "category": Object {
+              "properties": Object {
+                "id": Object {
+                  "format": "int64",
+                  "type": "integer",
+                },
+                "name": Object {
+                  "type": "string",
+                },
+              },
+              "type": "object",
+              "x-readme-ref-name": "Category",
+              "xml": Object {
+                "name": "Category",
+              },
+            },
+            "id": Object {
+              "default": 40,
+              "example": 25,
+              "format": "int64",
+              "readOnly": true,
+              "type": "integer",
+            },
+            "name": Object {
+              "example": "doggie",
+              "type": "string",
+            },
+            "photoUrls": Object {
+              "items": Object {
+                "example": "https://example.com/photo.png",
+                "type": "string",
+              },
+              "type": "array",
+              "xml": Object {
+                "name": "photoUrl",
+                "wrapped": true,
+              },
+            },
+            "status": Object {
+              "description": "pet status in the store",
+              "enum": Array [
+                "available",
+                "pending",
+                "sold",
+              ],
+              "type": "string",
+            },
+            "tags": Object {
+              "items": Object {
+                "properties": Object {
+                  "id": Object {
+                    "format": "int64",
+                    "type": "integer",
+                  },
+                  "name": Object {
+                    "type": "string",
+                  },
+                },
+                "type": "object",
+                "x-readme-ref-name": "Tag",
+                "xml": Object {
+                  "name": "Tag",
+                },
+              },
+              "type": "array",
+              "xml": Object {
+                "name": "tag",
+                "wrapped": true,
+              },
+            },
+          },
+          "required": Array [
+            "name",
+            "photoUrls",
+          ],
+          "type": "object",
+          "x-readme-ref-name": "Pet",
+          "xml": Object {
+            "name": "Pet",
+          },
+        },
+        "type": "array",
+      },
+    },
+  },
+  "description": "successful operation",
+}
+`;
+
+exports[`operation #prepareSecurity() should work for petstore 1`] = `
 Object {
   "OAuth2": Array [
     Object {
