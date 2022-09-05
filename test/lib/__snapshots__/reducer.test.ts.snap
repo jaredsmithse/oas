@@ -1,0 +1,105 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`reducer should support retaining deeply nested used $ref pointers 1`] = `
+Object {
+  "schemas": Object {
+    "ArrayOfFlatObjects": Object {
+      "items": Object {
+        "$ref": "#/components/schemas/FlatObject",
+      },
+      "type": "array",
+    },
+    "ArrayOfObjectsOfObjectsAndArrays": Object {
+      "items": Object {
+        "$ref": "#/components/schemas/ObjectOfObjectsAndArrays",
+      },
+      "type": "array",
+    },
+    "ArrayOfPrimitives": Object {
+      "items": Object {
+        "type": "string",
+      },
+      "type": "array",
+    },
+    "FlatObject": Object {
+      "properties": Object {
+        "BoolProp": Object {
+          "type": "boolean",
+        },
+        "NumProp": Object {
+          "type": "number",
+        },
+        "StringProp": Object {
+          "type": "string",
+        },
+      },
+      "type": "object",
+    },
+    "MultischemaOfEverything": Object {
+      "oneOf": Array [
+        Object {
+          "oneOf": Array [
+            Object {
+              "$ref": "#/components/schemas/ArrayOfObjectsOfObjectsAndArrays",
+            },
+            Object {
+              "properties": Object {
+                "flatObj": Object {
+                  "$ref": "#/components/schemas/FlatObject",
+                },
+                "objEverything": Object {
+                  "$ref": "#/components/schemas/ObjectOfEverything",
+                },
+              },
+              "type": "object",
+            },
+          ],
+        },
+        Object {
+          "$ref": "#/components/schemas/ArrayOfPrimitives",
+        },
+        Object {
+          "$ref": "#/components/schemas/ArrayOfFlatObjects",
+        },
+        Object {
+          "$ref": "#/components/schemas/FlatObject",
+        },
+        Object {
+          "$ref": "#/components/schemas/ObjectOfEverything",
+        },
+      ],
+    },
+    "ObjectOfEverything": Object {
+      "properties": Object {
+        "ArrayOfObjectsOfObjectsAndArrays": Object {
+          "$ref": "#/components/schemas/ArrayOfObjectsOfObjectsAndArrays",
+        },
+        "ObjectOfObjectsAndArrays": Object {
+          "$ref": "#/components/schemas/ObjectOfObjectsAndArrays",
+        },
+        "StringPrimitive": Object {
+          "type": "string",
+        },
+      },
+      "type": "object",
+    },
+    "ObjectOfObjectsAndArrays": Object {
+      "properties": Object {
+        "ObjectArrayPropInArray": Object {
+          "$ref": "#/components/schemas/ArrayOfFlatObjects",
+        },
+        "ObjectPropInArray": Object {
+          "$ref": "#/components/schemas/FlatObject",
+        },
+        "PrimitiveArrayPropInArray": Object {
+          "$ref": "#/components/schemas/ArrayOfPrimitives",
+        },
+        "StringPrimitive": Object {
+          "type": "string",
+        },
+      },
+      "type": "object",
+    },
+  },
+}
+`;

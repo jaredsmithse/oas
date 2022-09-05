@@ -1,3 +1,5 @@
+import { expect } from 'chai';
+
 import getUserVariable from '../../src/lib/get-user-variable';
 
 const topLevelUser = { apiKey: '123456', user: 'user', pass: 'pass' };
@@ -8,22 +10,24 @@ const keysUser = {
   ],
 };
 
-test('should handle if keys is an empty array', () => {
-  expect(getUserVariable({ keys: [] }, 'apiKey')).toBeNull();
-});
+describe('getUserVariable', function () {
+  it('should handle if keys is an empty array', function () {
+    expect(getUserVariable({ keys: [] }, 'apiKey')).to.be.null;
+  });
 
-test('should handle if keys is null', () => {
-  expect(getUserVariable({ keys: null }, 'apiKey')).toBeNull();
-});
+  it('should handle if keys is null', function () {
+    expect(getUserVariable({ keys: null }, 'apiKey')).to.be.null;
+  });
 
-test('should return top level property', () => {
-  expect(getUserVariable(topLevelUser, 'apiKey')).toBe('123456');
-});
+  it('should return top level property', function () {
+    expect(getUserVariable(topLevelUser, 'apiKey')).to.equal('123456');
+  });
 
-test('should return first item from keys array if no app selected', () => {
-  expect(getUserVariable(keysUser, 'apiKey')).toBe('123456');
-});
+  it('should return first item from keys array if no app selected', function () {
+    expect(getUserVariable(keysUser, 'apiKey')).to.equal('123456');
+  });
 
-test('should return selected app from keys array if app provided', () => {
-  expect(getUserVariable(keysUser, 'apiKey', 'app-2')).toBe('7890');
+  it('should return selected app from keys array if app provided', function () {
+    expect(getUserVariable(keysUser, 'apiKey', 'app-2')).to.equal('7890');
+  });
 });

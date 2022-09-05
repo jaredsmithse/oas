@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`\`allowEmptyValue\` support should support allowEmptyValue 1`] = `
+exports[`openapi-to-json-schema \`allowEmptyValue\` support should support allowEmptyValue 1`] = `
 Object {
   "properties": Object {
     "allOf:array of primitives:allowEmptyValue[false]default[]": Object {
@@ -577,7 +577,7 @@ Object {
 }
 `;
 
-exports[`\`default\` support should support a default of \`false\` 1`] = `
+exports[`openapi-to-json-schema \`default\` support should support a default of \`false\` 1`] = `
 Object {
   "properties": Object {
     "allOf:array of primitives:default[false]": Object {
@@ -857,7 +857,7 @@ Object {
 }
 `;
 
-exports[`\`default\` support should support default 1`] = `
+exports[`openapi-to-json-schema \`default\` support should support default 1`] = `
 Object {
   "properties": Object {
     "allOf:array of primitives:default[example default]": Object {
